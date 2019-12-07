@@ -42,6 +42,18 @@ string getChallangeInput()
     return callbackData;
 }
 
+int calcModuleFuel(int moduleRequirement)
+{
+    int total = 0;
+    int requires = floor((float)(moduleRequirement/3))-2;
+    if(requires > 0)
+    {
+        total += requires;
+        total += calcModuleFuel(requires);
+    }
+    return total;
+}
+
 // Main entry point
 int main(void)
 {
@@ -53,7 +65,7 @@ int main(void)
     for(string line; getline(inputStringStream, line); )
     {   
         int i = stoi(line);
-        total += floor((float)(i/3))-2;
+        total += calcModuleFuel(i);
     }
 
     cout << total << endl;
