@@ -9,9 +9,11 @@ class aocUtil
     public:
         static std::string getChallangeInput(int day);
         static size_t writeCallback(char* buf, size_t size, size_t nmemb, void* userdata);
-        void dumpVector(std::vector<int> input);
-        void dumpString(std::string input);
-        std::vector<int> explode(std::string const & s, char delim);
+        static void dumpVector(std::vector<std::string> input);
+        static void dumpVector(std::vector<int> input);
+        static void dumpString(std::string input);
+        static std::vector<std::string> explode(std::string const & s, char delim);
+        static std::vector<int> explodeInt(std::string const & s, char delim);
 
     private:
         aocUtil();
