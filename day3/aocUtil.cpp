@@ -2,6 +2,7 @@
 #include <vector>
 #include <sstream>
 #include <iostream>
+#include <fstream>
 #include <algorithm>
 #include <curl/curl.h>
 #include "aocUtil.h"
@@ -11,21 +12,35 @@ static string callbackData;
 
 string aocUtil::getChallangeInput(int day)
 {
-    string url = string("https://adventofcode.com/2019/day/") + to_string(day) + "/input";
-    char const * cookie = "session=53616c7465645f5fcb20143fa368d39554798bbd269a387aaa98c7fdddca7f77c47ad0019e02f83e6f20c2623e688f7c;";
-   
-   CURL* curl;
-   CURLcode result;
-   curl = curl_easy_init();
-   if(curl)
-   {
-       curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-       curl_easy_setopt(curl, CURLOPT_COOKIE, cookie);
-       curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &writeCallback);
-       result = curl_easy_perform(curl);
-   
-       curl_easy_cleanup(curl);
-   }
+    fstream fileStream;
+    fileStream.open(".input.cache");
+    if(!fileStream.fail())
+    {
+        callbackData.assign((istreambuf_iterator<char>(fileStream)), istreambuf_iterator<char>());
+    }
+    else
+    {
+        string url = string("https://adventofcode.com/2019/day/") + to_string(day) + "/input";
+        char const * cookie = "session=53616c7465645f5fcb20143fa368d39554798bbd269a387aaa98c7fdddca7f77c47ad0019e02f83e6f20c2623e688f7c;";
+       
+       CURL* curl;
+       CURLcode result;
+       curl = curl_easy_init();
+       if(curl)
+       {
+           curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+           curl_easy_setopt(curl, CURLOPT_COOKIE, cookie);
+           curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &writeCallback);
+           result = curl_easy_perform(curl);
+       
+           curl_easy_cleanup(curl);
+       }
+
+        ofstream out(".input.cache");
+        out << callbackData;
+        out.close();
+    }
+
    return callbackData;
 }
 
