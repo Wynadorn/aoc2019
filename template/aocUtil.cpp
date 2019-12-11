@@ -57,7 +57,12 @@ void aocUtil::dumpVector(vector<string> input)
 {
     for(vector<string>::const_iterator i = input.begin(); i != input.end(); ++i)
     {
-        cout << *i << ',';
+        cout << *i;
+
+        if(i != input.end()-1)
+        {
+            cout << ",";
+        }
     }
     cout << endl;
     return;
@@ -68,7 +73,12 @@ void aocUtil::dumpVector(vector<int> input)
 {
     for(vector<int>::const_iterator i = input.begin(); i != input.end(); ++i)
     {
-        cout << *i << ',';
+        cout << *i;
+
+        if(i != input.end()-1)
+        {
+            cout << ",";
+        }
     }
     cout << endl;
     return;

@@ -14,7 +14,7 @@ class planet
     private:
     //planet *parentPointer = NULL;
 	string parentString;
-    list<planet *> children;
+    list<string> childrenStrings;
     string planetId;
 
     public:
@@ -26,10 +26,10 @@ class planet
     planet()
     {}
 
-    void setParent(string _parent, planet p)
+    void setParent(string _parent)
     {
 		parentString = _parent;
-        universe[parentString].addChild(p);
+        universe[parentString].addChild(planetId);
     }
 
     string getParentString()
@@ -43,9 +43,9 @@ class planet
     }
 
 
-    void addChild(planet p)
+    void addChild(string childString)
     {
-        children.push_back(&p);
+        childrenStrings.push_back(childString);
     }
 
     int countParents()
@@ -67,6 +67,25 @@ class planet
 			}
 		}
     }
+
+    void dumpParents()
+    {
+		planet parentPlanet = *this;
+
+		while (true)
+		{
+			if (!parentPlanet.parentString.empty())
+			{
+                cout << parentPlanet.getPlanetId() << " - ";
+				parentPlanet = universe[parentPlanet.parentString];
+			}
+			else
+			{
+				return;
+			}
+		}
+    }
+
 };
 
 
@@ -98,7 +117,7 @@ int main()
             universe[orbitingPlanetParentId] = orbitingPlanetParent;
         }
         
-        universe[orbitingPlanetId].setParent(orbitingPlanetParentId, universe[orbitingPlanetId]);
+        universe[orbitingPlanetId].setParent(orbitingPlanetParentId);
     }
 
     int totalCount = 0;
@@ -116,6 +135,17 @@ int main()
         totalCount += x.countParents();
         cout << "Parents " << totalCount << endl;
     }
+
+    cout << "--- Part Two ---" << endl;
+
+    int myParents = universe["YOU"].countParents();
+    int santaParents = universe["SAN"].countParents();
+    
+    cout << "My parents: " << myParents << endl;
+    universe["YOU"].dumpParents();
+    cout << "SantaParents: " << santaParents << endl;
+    universe["SAN"].dumpParents();
+
 
     return 0;
 };
